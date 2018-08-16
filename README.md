@@ -82,6 +82,10 @@ The output then used to implement the corresponding operator and instruction.
 - Make it works on Windows
 - RPN calculator
 
+## License
+
+Unlicense, see [UNLICENSE](/UNLICENSE) for more explanation.
+
 [Rust]: https://rustup.rs/
 [Playground Demo]: https://play.rust-lang.org/?gist=13c286c91e751227b2265fb499a96a66&version=stable&mode=debug&edition=2015
 [reddit thread]: http://redd.it/2z68di 
