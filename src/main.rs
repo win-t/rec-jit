@@ -5,6 +5,7 @@ extern crate libc;
 use std::ptr;
 use std::mem;
 use std::iter::Peekable;
+use std::marker::PhantomData;
 use libc::{
     mmap, mprotect, munmap, c_void,
     PROT_EXEC, PROT_READ, PROT_WRITE,
@@ -16,6 +17,17 @@ const PAGE_SIZE: usize = 4096;
 struct AsmBuf {
     begin: *mut u8,
     cursor: *mut u8,
+}
+
+struct Fun<'a> {
+    inner: fn(i64) -> i64,
+    phantom: PhantomData<&'a mut AsmBuf>,
+}
+
+impl<'a> Fun<'a> {
+    fn call(&self, x: i64) -> i64 {
+        (self.inner)(x)
+    }
 }
 
 impl AsmBuf {
@@ -46,10 +58,13 @@ impl AsmBuf {
             self.cursor = self.cursor.add(size);
         }
     }
-    fn to_fn(&mut self) -> fn(i64) -> i64 {
+    fn to_fn(&mut self) -> Fun {
         unsafe {
             mprotect(self.begin as *mut c_void, PAGE_SIZE, PROT_READ | PROT_EXEC);
-            mem::transmute(self.begin)
+            Fun {
+                inner: mem::transmute(self.begin),
+                phantom: PhantomData,
+            }
         }
     }
 }
@@ -142,7 +157,7 @@ fn main() {
     let mut x = init;
     for i in 0..term+1 {
         println!("Term {}: {}", i, x);
-        x = fun(x);
+        x = fun.call(x);
     }
 }
 
