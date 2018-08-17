@@ -33,6 +33,11 @@ For example typing in the stdin:
 10
 ```
 
+Or using sample `input.txt`:
+```console
+$ cargo run < input.txt
+```
+
 Is the same as calculating the recurrence `U[n] = (U[n-1] + 2) * 3`, with the initial
 value 0, and the number of iteration 10. Thus the program will give output:
 
@@ -81,6 +86,7 @@ The output then used to implement the corresponding operator and instruction.
 - Bot for executing this program
 - Make it works on Windows
 - RPN calculator
+- use LLVM
 
 ## License
 
@@ -88,5 +94,5 @@ Unlicense, see [UNLICENSE](/UNLICENSE) for more explanation.
 
 [Rust]: https://rustup.rs/
 [Playground Demo]: https://play.rust-lang.org/?gist=13c286c91e751227b2265fb499a96a66&version=stable&mode=debug&edition=2015
-[reddit thread]: http://redd.it/2z68di 
+[reddit thread]: http://redd.it/2z68di
 [mmap]: https://github.com/rbranson/rust-mmap

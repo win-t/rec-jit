@@ -1,7 +1,10 @@
 [package]
 name = "rec-jit"
 version = "0.1.0"
-authors = ["Adit Cahya Ramadhan <matematika.adit@gmail.com>"]
+authors = [
+    "Adit Cahya Ramadhan <matematika.adit@gmail.com>",
+    "Kurnia D Win <win@payfazz.com>",
+]
 description = """
 A Basic JIT-Compiler for a simple math recurrence relation based on
 https://nullprogram.com/blog/2015/03/19/
