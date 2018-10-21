@@ -11,6 +11,7 @@ mod asm_buf {
     use std::io::{Cursor, Write};
     use std::mem::transmute;
     use std::slice::from_raw_parts_mut;
+    use std::ptr::null_mut;
 
     extern crate libc;
     use self::libc::{
@@ -28,7 +29,7 @@ mod asm_buf {
         let prot = PROT_READ | PROT_WRITE;
         let flags = MAP_ANONYMOUS | MAP_PRIVATE;
 
-        let begin = unsafe { mmap(0 as *mut c_void, BUF_SIZE, prot, flags, -1, 0) };
+        let begin = unsafe { mmap(null_mut(), BUF_SIZE, prot, flags, -1, 0) };
         assert_ne!(begin, MAP_FAILED, "Failed to mmap");
         let data = unsafe { from_raw_parts_mut(begin as *mut u8, BUF_SIZE) };
 
@@ -73,7 +74,7 @@ mod asm_buf {
                 assert_ne!(retval, -1, "Failed to mprotect");
             }
             unsafe {
-                transmute::<_, fn(i64) -> i64>(self.cursor.get_mut().as_mut_ptr() as *mut c_void)
+                transmute::<_, fn(i64) -> i64>(self.cursor.get_mut().as_mut_ptr())
             }
         }
     }
@@ -87,7 +88,7 @@ mod asm_buf {
         };
     }
 
-    impl AsmBuf{
+    impl AsmBuf {
         // only some (safe) opcode allowed here,
         // if we let arbitary opcode,
         // then calling to fn returned by to_fn should be considered unsafe
